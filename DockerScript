@@ -1,7 +1,17 @@
 #!/bin/bash
-sudo apt install docker.io
-sudo usermod -aG docker $USER
-systemctl enable docker.service
-systemctl start docker.service
-sudo apt install docker-compose
+
+# Install Docker if not installed
+command -v docker >/dev/null || sudo apt install -y docker.io
+
+# Add user to docker group if not already added
+groups $USER | grep -qw docker || sudo usermod -aG docker $USER
+
+# Enable and start Docker service
+sudo systemctl enable docker.service
+sudo systemctl start docker.service
+
+# Install Docker Compose if not installed
+command -v docker-compose >/dev/null || sudo apt install -y docker-compose
+
+# Show Docker version
 docker version
